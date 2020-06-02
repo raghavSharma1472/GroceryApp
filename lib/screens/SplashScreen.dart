@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:groceryhome/constants/constants.dart';
 
 class SplashScreen extends StatefulWidget {
+  static String id = 'SplashScreen';
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -26,9 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Text(
             'Bringing Groceries at your fingertips',
-            style: TextStyle(
-                color: Color(0xFF2699FB)
-            ),
+            style:
+                TextStyle(color: Color(0xFF2699FB), fontFamily: 'book-antiqua'),
           )
         ],
       ),
