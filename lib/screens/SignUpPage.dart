@@ -6,8 +6,10 @@ import 'package:groceryhome/widgets/custom_text_field.dart';
 import '../constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//final _firestore = Firestore.instance;
-//FirebaseUser loggedInUser;
+
+final _firestore = Firestore.instance;
+FirebaseUser loggedInUser;
+
 class SignUpPage extends StatefulWidget {
   static String id = 'SignUpPage';
 
@@ -16,7 +18,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  //final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
   String _name = '';
   String _email = '';
   String _number = '';
@@ -130,30 +132,30 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: MediaQuery.of(context).size.height / 18),
               GestureDetector(
                 onTap: () async {
-                  if (_confirmPassword != _password && _password != '')
-                    {Scaffold.of(context).showSnackBar(
+                  if (_confirmPassword != _password && _password != '') {
+                    Scaffold.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Passwords dont Match'),
                       ),
                     );
-//                    }else{
-//                    try{
-//                      final newUser = await _auth.createUserWithEmailAndPassword(email: _email, password: _password);
-//                      if(newUser != null){
-//                        Navigator.pushNamed(context,FirstScreen.id);
-//                      }
-//                      _firestore.collection('users').add({
-//                        'email':newUser.user.email,
-//                        'phone':_number,
-//                        'password': _password,
-//                        'name':_name
-//                      });
-//                    }catch(e){
-//                      print(e);
-//                    }
-
+                  } else {
+                    try {
+                      final newUser =
+                          await _auth.createUserWithEmailAndPassword(
+                              email: _email, password: _password);
+                      if (newUser != null) {
+                        Navigator.pushNamed(context, FirstScreen.id);
+                      }
+                      _firestore.collection('users').add({
+                        'email': newUser.user.email,
+                        'phone': _number,
+                        'password': _password,
+                        'name': _name
+                      });
+                    } catch (e) {
+                      print(e);
+                    }
                   }
-
                 }, //TODO Implemending New User Creation
                 child: Container(
                   height: 48,
