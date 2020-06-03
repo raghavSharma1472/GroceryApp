@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groceryhome/screens/FirstScreen.dart';
+import 'package:groceryhome/screens/HomePage.dart';
 import 'package:groceryhome/screens/SignUpPage.dart';
 import 'package:groceryhome/screens/SplashScreen.dart';
 import 'screens/FirstScreen.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
           LoginPage.id: (context) => LoginPage(),
           SignUpPage.id: (context) => SignUpPage(),
           SplashScreen.id: (context) => SplashScreen(),
+          HomePage.id: (context) => HomePage(),
         });
   }
 }
