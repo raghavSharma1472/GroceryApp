@@ -45,6 +45,9 @@ flutter:
     - family: segoe_print
       fonts:
         - asset: fonts/segoe_print.ttf
+    - family: book-antiqua
+      fonts:
+        - asset: fonts/bookAntiqua.ttf
   assets:
     - assets/images/bag.jpg
   # To add custom fonts to your application, add a fonts section here,
