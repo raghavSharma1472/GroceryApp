@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groceryhome/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groceryhome/screens/HomePage.dart';
 import 'package:groceryhome/widgets/custom_text_field.dart';
 import 'package:groceryhome/widgets/social_media_circle.dart';
 
@@ -103,7 +104,10 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height / 18),
               GestureDetector(
-                onTap: () {}, //TODO Authentication and Logging in
+                onTap: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, HomePage.id, (e) => false);
+                }, //TODO Authentication and Logging in
                 child: Container(
                   height: 48,
                   margin: EdgeInsets.only(left: 230.0),

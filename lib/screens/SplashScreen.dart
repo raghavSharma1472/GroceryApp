@@ -13,8 +13,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    Timer timer = Timer(Duration(seconds: 4), (){
-      Navigator.pushNamed(context, FirstScreen.id,);
+    Timer timer = Timer(Duration(seconds: 4), () {
+      Navigator.pushNamedAndRemoveUntil(context, FirstScreen.id, (e) => false);
     });
     return Scaffold(
       backgroundColor: Color(0xFFF7FBFC),
