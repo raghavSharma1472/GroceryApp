@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:groceryhome/constants/constants.dart';
+import 'dart:async';
+
+import 'FirstScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   static String id = 'SplashScreen';
@@ -10,6 +13,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
+    Timer timer = Timer(Duration(seconds: 4), (){
+      Navigator.pushNamed(context, FirstScreen.id,);
+    });
     return Scaffold(
       backgroundColor: Color(0xFFF7FBFC),
       body: Column(
