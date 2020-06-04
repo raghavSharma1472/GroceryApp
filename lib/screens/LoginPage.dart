@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryhome/screens/HomePage.dart';
 import 'package:groceryhome/widgets/custom_text_field.dart';
 import 'package:groceryhome/widgets/social_media_circle.dart';
-
 import '../constants/constants.dart';
 
 class LoginPage extends StatefulWidget {
