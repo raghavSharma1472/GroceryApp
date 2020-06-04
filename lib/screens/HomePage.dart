@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
             child: Text(
-              'Welcome ${currentUserName},',
+              'Welcome $currentUserName,',
               style: kHeadingText.copyWith(fontSize: 30.0),
             ),
           ),

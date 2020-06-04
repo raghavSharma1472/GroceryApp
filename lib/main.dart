@@ -4,11 +4,8 @@ import 'package:groceryhome/screens/HomePage.dart';
 import 'package:groceryhome/screens/SignUpPage.dart';
 import 'package:groceryhome/screens/SplashScreen.dart';
 import 'screens/FirstScreen.dart';
-import 'screens/FirstScreen.dart';
 import 'screens/LoginPage.dart';
 import 'screens/SignUpPage.dart';
-import 'screens/SignUpPage.dart';
-import 'screens/SplashScreen.dart';
 import 'screens/SplashScreen.dart';
 
 void main() => runApp(MyApp());
