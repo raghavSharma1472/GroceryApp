@@ -113,16 +113,23 @@ class SignUpPage extends StatelessWidget {
                   // } else {
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
-                        email: Provider.of<UserData>(context).getEmail,
-                        password: Provider.of<UserData>(context).getPassword);
+                        email: Provider.of<UserData>(context, listen: false)
+                            .getEmail,
+                        password: Provider.of<UserData>(context, listen: false)
+                            .getPassword);
                     _firestore
                         .collection('users')
-                        .document(Provider.of<UserData>(context).getEmail)
+                        .document(Provider.of<UserData>(context, listen: false)
+                            .getEmail)
                         .setData({
-                      'email': Provider.of<UserData>(context).getEmail,
-                      'phone': Provider.of<UserData>(context).getNumber,
-                      'password': Provider.of<UserData>(context).getPassword,
-                      'name': Provider.of<UserData>(context).getName
+                      'email': Provider.of<UserData>(context, listen: false)
+                          .getEmail,
+                      'phone': Provider.of<UserData>(context, listen: false)
+                          .getNumber,
+                      'password': Provider.of<UserData>(context, listen: false)
+                          .getPassword,
+                      'name':
+                          Provider.of<UserData>(context, listen: false).getName
                     });
                     if (newUser != null) {
                       Navigator.pushNamedAndRemoveUntil(
