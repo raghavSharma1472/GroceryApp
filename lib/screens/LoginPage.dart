@@ -1,23 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groceryhome/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:groceryhome/providers/user_data.dart';
 import 'package:groceryhome/screens/HomePage.dart';
 import 'package:groceryhome/widgets/custom_text_field.dart';
 import 'package:groceryhome/widgets/social_media_circle.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/constants.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   static String id = '/LoginPage';
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  String _email = '';
-  int _number = 0;
-  String _password = '';
-
+  FirebaseAuth _firebaseAuth;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,13 +58,13 @@ class _LoginPageState extends State<LoginPage> {
                 padding: 20.0,
                 keyboardType: TextInputType.emailAddress,
                 onChangedCallback: (String value) {
-                  setState(() {
-                    try {
-                      _email = value.toString();
-                    } catch (e) {
-                      _number = int.parse(value);
-                    }
-                  });
+                  try {
+                    Provider.of<UserData>(context, listen: false)
+                        .setEmail(value);
+                  } catch (e) {
+                    Provider.of<UserData>(context, listen: false)
+                        .setName(value);
+                  }
                 },
               ),
               CustomTextField(
@@ -78,9 +73,8 @@ class _LoginPageState extends State<LoginPage> {
                 padding: 20.0,
                 obscureText: true,
                 onChangedCallback: (String value) {
-                  setState(() {
-                    _password = value;
-                  });
+                  Provider.of<UserData>(context, listen: false)
+                      .setPassword(value);
                 },
               ),
               Padding(
@@ -104,9 +98,13 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height / 18),
               GestureDetector(
-                onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, HomePage.id, (e) => false);
+                onTap: () async {
+                  final signIn = await _firebaseAuth.signInWithEmailAndPassword(
+                      email: Provider.of<UserData>(context).getEmail,
+                      password: Provider.of<UserData>(context).getPassword);
+                  if (signIn != null)
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, HomePage.id, (e) => false);
                 }, //TODO Authentication and Logging in
                 child: Container(
                   height: 48,
