@@ -16,6 +16,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF7FBFC),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -57,7 +58,7 @@ class SignUpPage extends StatelessWidget {
                 hint: 'Name',
                 padding: 10.0,
                 onChangedCallback: (String value) {
-                  Provider.of<UserData>(context, listen: false).setName(value);
+                  context.read<UserData>().setName(value);
                 },
               ),
               CustomTextField(
@@ -66,8 +67,7 @@ class SignUpPage extends StatelessWidget {
                   padding: 10.0,
                   keyboardType: TextInputType.emailAddress,
                   onChangedCallback: (String value) {
-                    Provider.of<UserData>(context, listen: false)
-                        .setEmail(value);
+                    context.read<UserData>().setEmail(value);
                   }),
               CustomTextField(
                 preset: '9696969696',
@@ -75,8 +75,7 @@ class SignUpPage extends StatelessWidget {
                 padding: 10.0,
                 keyboardType: TextInputType.phone,
                 onChangedCallback: (String value) {
-                  Provider.of<UserData>(context, listen: false)
-                      .setNumber(value);
+                  context.read<UserData>().setNumber(value);
                 },
               ),
               CustomTextField(
@@ -85,8 +84,7 @@ class SignUpPage extends StatelessWidget {
                 padding: 10.0,
                 obscureText: true,
                 onChangedCallback: (String value) {
-                  Provider.of<UserData>(context, listen: false)
-                      .setPassword(value);
+                  context.read<UserData>().setPassword(value);
                 },
               ),
               CustomTextField(
@@ -95,8 +93,7 @@ class SignUpPage extends StatelessWidget {
                 padding: 10.0,
                 obscureText: true,
                 onChangedCallback: (String value) {
-                  Provider.of<UserData>(context, listen: false)
-                      .setConfirmPassword(value);
+                  context.read<UserData>().setConfirmPassword(value);
                 },
               ),
               Container(
@@ -113,23 +110,15 @@ class SignUpPage extends StatelessWidget {
                   // } else {
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
-                        email: Provider.of<UserData>(context, listen: false)
-                            .getEmail,
-                        password: Provider.of<UserData>(context, listen: false)
-                            .getPassword);
+                        email: context.read<UserData>().getEmail,
+                        password: context.read<UserData>().getPassword);
                     _firestore
                         .collection('users')
-                        .document(Provider.of<UserData>(context, listen: false)
-                            .getEmail)
+                        .document(context.read<UserData>().getEmail)
                         .setData({
-                      'email': Provider.of<UserData>(context, listen: false)
-                          .getEmail,
-                      'phone': Provider.of<UserData>(context, listen: false)
-                          .getNumber,
-                      'password': Provider.of<UserData>(context, listen: false)
-                          .getPassword,
-                      'name':
-                          Provider.of<UserData>(context, listen: false).getName
+                      'email': context.read<UserData>().getEmail,
+                      'phone': context.read<UserData>().getNumber,
+                      'name': context.read<UserData>().getName
                     });
                     if (newUser != null) {
                       Navigator.pushNamedAndRemoveUntil(

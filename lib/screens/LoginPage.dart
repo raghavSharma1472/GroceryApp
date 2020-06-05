@@ -7,15 +7,15 @@ import 'package:groceryhome/screens/HomePage.dart';
 import 'package:groceryhome/widgets/custom_text_field.dart';
 import 'package:groceryhome/widgets/social_media_circle.dart';
 import 'package:provider/provider.dart';
-
 import '../constants/constants.dart';
 
 class LoginPage extends StatelessWidget {
   static String id = '/LoginPage';
-  FirebaseAuth _firebaseAuth;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF7FBFC),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -53,8 +53,7 @@ class LoginPage extends StatelessWidget {
                 style: kHeadingText,
               ),
               CustomTextField(
-                preset: '9696969696',
-                hint: 'Email/Mobile',
+                preset: 'Email/Mobile',
                 padding: 20.0,
                 keyboardType: TextInputType.emailAddress,
                 onChangedCallback: (String value) {
@@ -68,8 +67,7 @@ class LoginPage extends StatelessWidget {
                 },
               ),
               CustomTextField(
-                preset: '••••••••',
-                hint: 'Password',
+                preset: 'Password',
                 padding: 20.0,
                 obscureText: true,
                 onChangedCallback: (String value) {
@@ -99,13 +97,26 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: MediaQuery.of(context).size.height / 18),
               GestureDetector(
                 onTap: () async {
-                  final signIn = await _firebaseAuth.signInWithEmailAndPassword(
-                      email: Provider.of<UserData>(context).getEmail,
-                      password: Provider.of<UserData>(context).getPassword);
-                  if (signIn != null)
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, HomePage.id, (e) => false);
-                }, //TODO Authentication and Logging in
+                  try {
+                    final signIn =
+                        await _firebaseAuth.signInWithEmailAndPassword(
+                            email: Provider.of<UserData>(context, listen: false)
+                                .getEmail,
+                            password:
+                                Provider.of<UserData>(context, listen: false)
+                                    .getPassword);
+                    if (signIn != null) {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, HomePage.id, (e) => false);
+                      print('UserSignedIn');
+                      print(signIn);
+                    } else
+                      print('User Not Signed In');
+                  } catch (e) {
+                    print(e);
+                    print('Error Signing User it');
+                  }
+                }, //TODO Authentication and Logging in with mobile
                 child: Container(
                   height: 48,
                   margin: EdgeInsets.only(left: 230.0),
