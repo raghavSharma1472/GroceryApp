@@ -1,12 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryhome/constants/constants.dart';
+import 'package:groceryhome/providers/user_data.dart';
+import 'package:groceryhome/screens/HomePage.dart';
 import 'package:groceryhome/screens/SignUpPage.dart';
 import 'package:groceryhome/widgets/social_media_circle.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/constants.dart';
 import 'LoginPage.dart';
 import 'SignUpPage.dart';
+import 'package:provider/provider.dart';
 
 class FirstScreen extends StatelessWidget {
   static String id = 'FirstScreen';
@@ -19,8 +24,47 @@ class FirstScreen extends StatelessWidget {
     '* Find Products That Suit You',
     '* Save Time Avoiding Queues'
   ];
+
+  void isAlreadySignedIn(BuildContext context) async {
+    var pref = await SharedPreferences.getInstance();
+    try {
+      if ((pref.getString('email') != '')) {
+        context.read<UserData>().setEmail(pref.getString('email'));
+        context.read<UserData>().setPassword(pref.getString('password'));
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: context.read<UserData>().getEmail,
+                password: context.read<UserData>().getPassword)
+            .then((value) {
+          context.read<UserData>().setName(value.user.displayName);
+          Navigator.pushNamedAndRemoveUntil(
+              context, HomePage.id, (route) => false);
+          context.read<UserData>().toggleConnected();
+          print('UserSignedInthroughLocallySavedData');
+        });
+      }
+    } catch (e) {
+      print(e);
+      print('No Data Stored Currently Locally');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    isAlreadySignedIn(context);
+    // UserData().getUserDataLocally();
+    // if (context.read<UserData>().getEmail != '') {
+    //   try {
+    //     FirebaseAuth.instance.signInWithEmailAndPassword(
+    //         email: context.read<UserData>().getEmail,
+    //         password: context.read<UserData>().getPassword);
+    //     Navigator.pushNamedAndRemoveUntil(
+    //         context, HomePage.id, (route) => false);
+    //   } catch (e) {
+    //     print(e);
+    //     print('Fatil Error');
+    //   }
+    // }
     return Scaffold(
       backgroundColor: Color(0xFFF7FBFC),
       body: SafeArea(

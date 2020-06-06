@@ -104,6 +104,7 @@ class SignUpPage extends StatelessWidget {
               // SizedBox(height: MediaQuery.of(context).size.height / 18),
               GestureDetector(
                 onTap: () async {
+                  //TODO Password Match
                   // if (Provider.of<UserData>(context).getConfirmPassword !=
                   //         Provider.of<UserData>(context).getPassword &&
                   //     Provider.of<UserData>(context).getPassword != '') {
@@ -125,6 +126,9 @@ class SignUpPage extends StatelessWidget {
                           .then((value) {
                         value.user.updateProfile(info);
                         print('${info.displayName} Signed In');
+                        context.read<UserData>().storeUserDataLocally(
+                            context.read<UserData>().getEmail,
+                            context.read<UserData>().getPassword);
                       });
                       await _auth.currentUser();
                       _firestore

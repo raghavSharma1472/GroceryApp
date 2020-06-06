@@ -105,13 +105,18 @@ class LoginPage extends StatelessWidget {
                               Provider.of<UserData>(context, listen: false)
                                   .getPassword)
                       .then((value) {
-                    context.read<UserData>().setName(value.user.displayName);
+                    context.read<UserData>().setName(
+                        value.user.displayName); //TODO Set other Details too
                     Navigator.pushNamedAndRemoveUntil(
                         context, HomePage.id, (e) => false);
                     print('UserSignedIn');
+                    context.read<UserData>().toggleConnected();
+                    context.read<UserData>().storeUserDataLocally(
+                        context.read<UserData>().getEmail,
+                        context.read<UserData>().getPassword);
                   }).catchError((onError) {
                     print(onError);
-                    print('Error Signing User it');
+                    print('Error Signing User in');
                   });
                 }, //TODO Authentication and Logging in with mobile
                 child: Container(

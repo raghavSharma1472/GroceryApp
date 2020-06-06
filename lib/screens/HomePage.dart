@@ -41,12 +41,13 @@ class HomePage extends StatelessWidget {
                     ),
                     onPressed: (() async {
                       if (context.read<UserData>().isConnected)
-                        CircularProgressIndicator();
-                      await FirebaseAuth.instance.signOut();
+                        // CircularProgressIndicator();
+                        await FirebaseAuth.instance.signOut();
                       print('User Signed Out');
                       Navigator.pushNamedAndRemoveUntil(
                           context, FirstScreen.id, (route) => false);
                       context.read<UserData>().toggleConnected();
+                      context.read<UserData>().storeUserDataLocally('', '');
                     }))
               ],
             ),
