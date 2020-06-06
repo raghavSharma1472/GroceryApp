@@ -6,7 +6,7 @@ class UserData extends ChangeNotifier {
   String _number = '';
   String _password = '';
   String _confirmPassword = '';
-
+  bool _isConnected = false;
   String get getName {
     return _name;
   }
@@ -25,6 +25,10 @@ class UserData extends ChangeNotifier {
 
   String get getConfirmPassword {
     return _confirmPassword;
+  }
+
+  bool get isConnected {
+    return _isConnected;
   }
 
   void setName(String name) {
@@ -49,6 +53,14 @@ class UserData extends ChangeNotifier {
 
   void setConfirmPassword(String confirmPassword) {
     _confirmPassword = confirmPassword;
+    notifyListeners();
+  }
+
+  void toggleConnected() {
+    if (isConnected)
+      _isConnected = false;
+    else
+      _isConnected = true;
     notifyListeners();
   }
 }

@@ -97,25 +97,22 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: MediaQuery.of(context).size.height / 18),
               GestureDetector(
                 onTap: () async {
-                  try {
-                    final signIn =
-                        await _firebaseAuth.signInWithEmailAndPassword(
-                            email: Provider.of<UserData>(context, listen: false)
-                                .getEmail,
-                            password:
-                                Provider.of<UserData>(context, listen: false)
-                                    .getPassword);
-                    if (signIn != null) {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, HomePage.id, (e) => false);
-                      print('UserSignedIn');
-                      print(signIn);
-                    } else
-                      print('User Not Signed In');
-                  } catch (e) {
-                    print(e);
+                  await _firebaseAuth
+                      .signInWithEmailAndPassword(
+                          email: Provider.of<UserData>(context, listen: false)
+                              .getEmail,
+                          password:
+                              Provider.of<UserData>(context, listen: false)
+                                  .getPassword)
+                      .then((value) {
+                    context.read<UserData>().setName(value.user.displayName);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, HomePage.id, (e) => false);
+                    print('UserSignedIn');
+                  }).catchError((onError) {
+                    print(onError);
                     print('Error Signing User it');
-                  }
+                  });
                 }, //TODO Authentication and Logging in with mobile
                 child: Container(
                   height: 48,

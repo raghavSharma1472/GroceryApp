@@ -109,20 +109,37 @@ class SignUpPage extends StatelessWidget {
                   //     Provider.of<UserData>(context).getPassword != '') {
                   // } else {
                   try {
-                    final newUser = await _auth.createUserWithEmailAndPassword(
-                        email: context.read<UserData>().getEmail,
-                        password: context.read<UserData>().getPassword);
-                    _firestore
-                        .collection('users')
-                        .document(context.read<UserData>().getEmail)
-                        .setData({
-                      'email': context.read<UserData>().getEmail,
-                      'phone': context.read<UserData>().getNumber,
-                      'name': context.read<UserData>().getName
-                    });
-                    if (newUser != null) {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, HomePage.id, (e) => false);
+                    if (!context.read<UserData>().isConnected) {
+                      CircularProgressIndicator();
+                      UserUpdateInfo info = UserUpdateInfo();
+                      info.displayName = context.read<UserData>().getName;
+                      final newUser =
+                          await _auth.createUserWithEmailAndPassword(
+                              email: context.read<UserData>().getEmail,
+                              password: context.read<UserData>().getPassword);
+                      print('${info.displayName} Signed Up');
+                      await _auth
+                          .signInWithEmailAndPassword(
+                              email: context.read<UserData>().getEmail,
+                              password: context.read<UserData>().getPassword)
+                          .then((value) {
+                        value.user.updateProfile(info);
+                        print('${info.displayName} Signed In');
+                      });
+                      await _auth.currentUser();
+                      _firestore
+                          .collection('users')
+                          .document(context.read<UserData>().getEmail)
+                          .setData({
+                        'email': context.read<UserData>().getEmail,
+                        'phone': context.read<UserData>().getNumber,
+                        'name': context.read<UserData>().getName
+                      });
+                      if (newUser != null) {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, HomePage.id, (e) => false);
+                      }
+                      context.read<UserData>().toggleConnected();
                     }
                   } catch (e) {
                     print(e);
