@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:groceryhome/constants/constants.dart';
 import 'package:groceryhome/providers/user_data.dart';
-import 'package:groceryhome/screens/FirstScreen.dart';
 import 'package:groceryhome/widgets/custom_heading.dart';
 import 'package:groceryhome/widgets/store_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:groceryhome/services/signingOut.dart';
 
 class HomePage extends StatelessWidget {
   static final String id = 'homepage';
   void getCurrentUser(context) async {
     FirebaseUser currentUser;
     currentUser = await FirebaseAuth.instance.currentUser();
-    print('${currentUser.displayName} connected');
+    print('${currentUser.displayName ?? 'Userhas'} connected');
   }
 
   @override
@@ -39,16 +39,7 @@ class HomePage extends StatelessWidget {
                       Icons.shopping_cart,
                       color: Colors.blue,
                     ),
-                    onPressed: (() async {
-                      if (context.read<UserData>().isConnected)
-                        // CircularProgressIndicator();
-                        await FirebaseAuth.instance.signOut();
-                      print('User Signed Out');
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, FirstScreen.id, (route) => false);
-                      context.read<UserData>().toggleConnected();
-                      context.read<UserData>().storeUserDataLocally('', '');
-                    }))
+                    onPressed: () => SignOutUser().signOutUser(context))
               ],
             ),
           ),

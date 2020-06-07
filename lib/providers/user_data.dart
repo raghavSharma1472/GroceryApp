@@ -32,23 +32,26 @@ class UserData extends ChangeNotifier {
   bool get isConnected {
     return _isConnected;
   }
+//TODO Add this after implemending Splash Screen
+  // void getUserDataLocally() {
+  //   SharedPreferences.getInstance().then((value) {
+  //     _email = value.getString('email') ?? '';
+  //     _password = value.getString('password') ?? '';
+  //   });
+  //   notifyListeners();
+  // }
 
-  void getUserDataLocally() async {
-    var pref = await SharedPreferences.getInstance();
-    try {
-      _email = pref.getString('email');
-      _password = pref.getString('password');
-      notifyListeners();
-    } catch (e) {
-      print(e);
-      print('No Data Stored Currently Locally');
-    }
-  }
-
-  void storeUserDataLocally(String email, String password) async {
-    var pref = await SharedPreferences.getInstance();
-    pref.setString('email', email);
-    pref.setString('password', password);
+  void storeUserDataLocally(String email, String password) {
+    SharedPreferences.getInstance().then((value) {
+      if (value.getString('email') != email) {
+        value.setString('email', email);
+        value.setString('password', password);
+      }
+    }).catchError((onError) {
+      print(onError);
+      print(
+          'Fatil Error storing user details locally'); //TODO remove if working fine
+    });
   }
 
   void setName(String name) {

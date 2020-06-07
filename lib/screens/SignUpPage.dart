@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:groceryhome/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryhome/providers/user_data.dart';
-import 'package:groceryhome/screens/HomePage.dart';
 import 'package:groceryhome/widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
 import '../constants/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:groceryhome/services/signingIn.dart';
+import 'package:groceryhome/services/signingUp.dart';
 
 class SignUpPage extends StatelessWidget {
   static String id = 'SignUpPage';
-  final _firestore = Firestore.instance;
-  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,39 +109,8 @@ class SignUpPage extends StatelessWidget {
                   // } else {
                   try {
                     if (!context.read<UserData>().isConnected) {
-                      CircularProgressIndicator();
-                      UserUpdateInfo info = UserUpdateInfo();
-                      info.displayName = context.read<UserData>().getName;
-                      final newUser =
-                          await _auth.createUserWithEmailAndPassword(
-                              email: context.read<UserData>().getEmail,
-                              password: context.read<UserData>().getPassword);
-                      print('${info.displayName} Signed Up');
-                      await _auth
-                          .signInWithEmailAndPassword(
-                              email: context.read<UserData>().getEmail,
-                              password: context.read<UserData>().getPassword)
-                          .then((value) {
-                        value.user.updateProfile(info);
-                        print('${info.displayName} Signed In');
-                        context.read<UserData>().storeUserDataLocally(
-                            context.read<UserData>().getEmail,
-                            context.read<UserData>().getPassword);
-                      });
-                      await _auth.currentUser();
-                      _firestore
-                          .collection('users')
-                          .document(context.read<UserData>().getEmail)
-                          .setData({
-                        'email': context.read<UserData>().getEmail,
-                        'phone': context.read<UserData>().getNumber,
-                        'name': context.read<UserData>().getName
-                      });
-                      if (newUser != null) {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, HomePage.id, (e) => false);
-                      }
-                      context.read<UserData>().toggleConnected();
+                      SignUpUser().signUpUser(context);
+                      SignUserIn().signUserIn(context);
                     }
                   } catch (e) {
                     print(e);

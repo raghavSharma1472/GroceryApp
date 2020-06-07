@@ -1,17 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groceryhome/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryhome/providers/user_data.dart';
-import 'package:groceryhome/screens/HomePage.dart';
 import 'package:groceryhome/widgets/custom_text_field.dart';
 import 'package:groceryhome/widgets/social_media_circle.dart';
 import 'package:provider/provider.dart';
 import '../constants/constants.dart';
+import 'package:groceryhome/services/signingIn.dart';
 
 class LoginPage extends StatelessWidget {
   static String id = '/LoginPage';
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,29 +94,8 @@ class LoginPage extends StatelessWidget {
               ),
               SizedBox(height: MediaQuery.of(context).size.height / 18),
               GestureDetector(
-                onTap: () async {
-                  await _firebaseAuth
-                      .signInWithEmailAndPassword(
-                          email: Provider.of<UserData>(context, listen: false)
-                              .getEmail,
-                          password:
-                              Provider.of<UserData>(context, listen: false)
-                                  .getPassword)
-                      .then((value) {
-                    context.read<UserData>().setName(
-                        value.user.displayName); //TODO Set other Details too
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, HomePage.id, (e) => false);
-                    print('UserSignedIn');
-                    context.read<UserData>().toggleConnected();
-                    context.read<UserData>().storeUserDataLocally(
-                        context.read<UserData>().getEmail,
-                        context.read<UserData>().getPassword);
-                  }).catchError((onError) {
-                    print(onError);
-                    print('Error Signing User in');
-                  });
-                }, //TODO Authentication and Logging in with mobile
+                onTap: () => SignUserIn().signUserIn(
+                    context), //TODO Authentication and Logging in with mobile
                 child: Container(
                   height: 48,
                   margin: EdgeInsets.only(left: 230.0),
