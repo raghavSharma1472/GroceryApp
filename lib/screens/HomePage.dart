@@ -8,32 +8,44 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:groceryhome/services/signingOut.dart';
 import 'package:geolocator/geolocator.dart';
+
 FirebaseUser currentUser;
 final _firestore = Firestore.instance;
+
 class HomePage extends StatelessWidget {
   static final String id = 'homepage';
   final _auth = FirebaseAuth.instance;
   double latitude;
   double longitude;
-  void getLandL() async {
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-    latitude = position.latitude;
-    longitude = position.longitude;
-  }
-  void getCurrentUser(context) async {
-    currentUser = await _auth.currentUser();
-    print('${currentUser.displayName ?? 'Userhas'} connected');
+  void getLandL() {}
+
+  void getCurrentUser(context) {
+    _auth.currentUser().then((user) {
+      currentUser = user;
+      print('${currentUser.displayName ?? 'Userhas'} connected');
+      (Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low))
+          .then((position) {
+        latitude = position.latitude;
+        longitude = position.longitude;
+        _firestore
+            .collection('users')
+            .document(currentUser.email)
+            .updateData({'latitude': latitude, 'longitude': longitude});
+      }).catchError((onError) {
+        print(onError);
+        print(
+            'Error while accessing user location or firebase setting location');
+      });
+    });
   }
 
-  void addLatitudeAndLongitude() async{
-    await _firestore.collection('users').document(currentUser.email).updateData({'latitude':latitude,'longitude':longitude});
-  }
+  // void addLatitudeAndLongitude() async {}
 
   @override
   Widget build(BuildContext context) {
-    getLandL();
     getCurrentUser(context);
-    addLatitudeAndLongitude();
+    // getLandL();
+    // addLatitudeAndLongitude();
 //    context.read<UserData>().setLatitude(latitude);
 //    context.read<UserData>().setLongitude(longitude);
     return Scaffold(
