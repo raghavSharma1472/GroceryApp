@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 class SignUserIn {
   void signUserIn(BuildContext context) {
+    context.read<UserData>().setSpinner();
     FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: Provider.of<UserData>(context, listen: false).getEmail,
@@ -16,6 +17,7 @@ class SignUserIn {
       print('${value.user.displayName ?? 'User'} SignedIn');
       context.read<UserData>().toggleConnected();
       Navigator.pushNamedAndRemoveUntil(context, HomePage.id, (e) => false);
+      context.read<UserData>().setSpinner();
       context.read<UserData>().storeUserDataLocally(
           context.read<UserData>().getEmail,
           context.read<UserData>().getPassword);

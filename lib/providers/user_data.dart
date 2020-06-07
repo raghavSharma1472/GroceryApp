@@ -12,11 +12,11 @@ class UserData extends ChangeNotifier {
   double _longitude;
   bool _showSpinner = false;
 
-  bool getSpinner(){
+  bool get getSpinner {
     return _showSpinner;
   }
 
-  void setSpinner(){
+  void setSpinner() {
     _showSpinner = !_showSpinner;
     notifyListeners();
   }
@@ -44,6 +44,10 @@ class UserData extends ChangeNotifier {
   bool get isConnected {
     return _isConnected;
   }
+
+  double get getLatitude => _latitude;
+  double get getLongitude => _longitude;
+
 //TODO Add this after implemending Splash Screen
   // void getUserDataLocally() {
   //   SharedPreferences.getInstance().then((value) {
@@ -109,5 +113,4 @@ class UserData extends ChangeNotifier {
     _latitude = value;
     notifyListeners();
   }
-
 }

@@ -15,9 +15,6 @@ final _firestore = Firestore.instance;
 class HomePage extends StatelessWidget {
   static final String id = 'homepage';
   final _auth = FirebaseAuth.instance;
-  double latitude;
-  double longitude;
-  void getLandL() {}
 
   void getCurrentUserWithLocation(context) {
     _auth.currentUser().then((user) {
@@ -25,12 +22,14 @@ class HomePage extends StatelessWidget {
       print('${currentUser.displayName ?? 'Userhas'} connected');
       (Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low))
           .then((position) {
-        latitude = position.latitude;
-        longitude = position.longitude;
-        _firestore
-            .collection('users')
-            .document(currentUser.email)
-            .updateData({'latitude': latitude, 'longitude': longitude});
+        _firestore.collection('users').document(currentUser.email).updateData(
+            {'latitude': position.latitude, 'longitude': position.longitude});
+        if (position != null) {
+          // context.read<UserData>().setLatitude(position.latitude); //! Error to solve
+          // context.read<UserData>().setLongitude(position.longitude); //! Error to solve
+          // print('Latitude = ${context.read<UserData>().getLatitude}');
+          // print('Longitude = ${context.read<UserData>().getLongitude}');
+        }
       }).catchError((onError) {
         print(onError);
         print(
@@ -39,15 +38,11 @@ class HomePage extends StatelessWidget {
     });
   }
 
-  // void addLatitudeAndLongitude() async {}
-
   @override
   Widget build(BuildContext context) {
     getCurrentUserWithLocation(context);
     // getLandL();
     // addLatitudeAndLongitude();
-//    context.read<UserData>().setLatitude(latitude);
-//    context.read<UserData>().setLongitude(longitude);
     return Scaffold(
       backgroundColor: Color(0xFFF7FBFC),
       body: ListView(
@@ -77,7 +72,7 @@ class HomePage extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
             child: Text(
-              'Welcome ${context.watch<UserData>().getName ?? 'User'},',
+              'Welcome ${context.watch<UserData>().getName ?? 'User'}',
               style: kHeadingText.copyWith(fontSize: 30.0),
             ),
           ),
