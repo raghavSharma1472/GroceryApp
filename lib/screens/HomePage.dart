@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
   double longitude;
   void getLandL() {}
 
-  void getCurrentUser(context) {
+  void getCurrentUserWithLocation(context) {
     _auth.currentUser().then((user) {
       currentUser = user;
       print('${currentUser.displayName ?? 'Userhas'} connected');
@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    getCurrentUser(context);
+    getCurrentUserWithLocation(context);
     // getLandL();
     // addLatitudeAndLongitude();
 //    context.read<UserData>().setLatitude(latitude);
