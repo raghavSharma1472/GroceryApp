@@ -8,6 +8,18 @@ class UserData extends ChangeNotifier {
   String _password = '';
   String _confirmPassword = '';
   bool _isConnected = false;
+  double _latitude;
+  double _longitude;
+  bool _showSpinner = false;
+
+  bool getSpinner(){
+    return _showSpinner;
+  }
+
+  void setSpinner(){
+    _showSpinner = !_showSpinner;
+    notifyListeners();
+  }
 
   String get getName {
     return _name;
@@ -87,4 +99,15 @@ class UserData extends ChangeNotifier {
     print('isConneced: ' + _isConnected.toString());
     notifyListeners();
   }
+
+  void setLongitude(double value) {
+    _longitude = value;
+    notifyListeners();
+  }
+
+  void setLatitude(double value) {
+    _latitude = value;
+    notifyListeners();
+  }
+
 }

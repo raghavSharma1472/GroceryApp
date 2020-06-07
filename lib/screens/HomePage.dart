@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:groceryhome/constants/constants.dart';
 import 'package:groceryhome/providers/user_data.dart';
@@ -6,18 +7,35 @@ import 'package:groceryhome/widgets/store_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:groceryhome/services/signingOut.dart';
-
+import 'package:geolocator/geolocator.dart';
+FirebaseUser currentUser;
+final _firestore = Firestore.instance;
 class HomePage extends StatelessWidget {
   static final String id = 'homepage';
+  final _auth = FirebaseAuth.instance;
+  double latitude;
+  double longitude;
+  void getLandL() async {
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    latitude = position.latitude;
+    longitude = position.longitude;
+  }
   void getCurrentUser(context) async {
-    FirebaseUser currentUser;
-    currentUser = await FirebaseAuth.instance.currentUser();
+    currentUser = await _auth.currentUser();
     print('${currentUser.displayName ?? 'Userhas'} connected');
+  }
+
+  void addLatitudeAndLongitude() async{
+    await _firestore.collection('users').document(currentUser.email).updateData({'latitude':latitude,'longitude':longitude});
   }
 
   @override
   Widget build(BuildContext context) {
+    getLandL();
     getCurrentUser(context);
+    addLatitudeAndLongitude();
+//    context.read<UserData>().setLatitude(latitude);
+//    context.read<UserData>().setLongitude(longitude);
     return Scaffold(
       backgroundColor: Color(0xFFF7FBFC),
       body: ListView(

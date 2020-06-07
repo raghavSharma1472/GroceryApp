@@ -3,8 +3,10 @@ import 'package:groceryhome/constants/constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryhome/providers/user_data.dart';
 import 'package:groceryhome/widgets/custom_text_field.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
 import '../constants/constants.dart';
+import 'package:groceryhome/screens/HomePage.dart';
 import 'package:groceryhome/services/signingIn.dart';
 import 'package:groceryhome/services/signingUp.dart';
 
@@ -102,6 +104,7 @@ class SignUpPage extends StatelessWidget {
               // SizedBox(height: MediaQuery.of(context).size.height / 18),
               GestureDetector(
                 onTap: () async {
+                  //context.read<UserData>().setSpinner();
                   //TODO Password Match
                   // if (Provider.of<UserData>(context).getConfirmPassword !=
                   //         Provider.of<UserData>(context).getPassword &&
@@ -111,10 +114,12 @@ class SignUpPage extends StatelessWidget {
                     if (!context.read<UserData>().isConnected) {
                       SignUpUser().signUpUser(context);
                       SignUserIn().signUserIn(context);
+                      Navigator.pushNamed(context, HomePage.id);
                     }
                   } catch (e) {
                     print(e);
                   }
+                  //context.read<UserData>().setSpinner();
                   // }
                 },
                 child: Container(
