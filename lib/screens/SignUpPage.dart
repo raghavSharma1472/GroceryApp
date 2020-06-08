@@ -154,7 +154,7 @@ class SignUpPage extends StatelessWidget {
                         try {
                           if (!context.read<UserData>().isConnected) {
                             SignUpUser().signUpUser(context);
-                            _passwordController.dispose();
+                            // _passwordController.dispose();//TODO Find a way to dispose this later
                           }
                         } catch (e) {
                           print(e);

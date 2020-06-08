@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:groceryhome/providers/user_data.dart';
 import 'package:groceryhome/screens/HomePage.dart';
 import 'package:provider/provider.dart';
+import 'package:groceryhome/services/firebase_errorchecking.dart';
 
 class SignUserIn {
   void signUserIn(BuildContext context) {
@@ -22,6 +23,12 @@ class SignUserIn {
           context.read<UserData>().getEmail,
           context.read<UserData>().getPassword);
     }).catchError((onError) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return FirebaseErrors().signInError(onError.code, context);
+        },
+      );
       print(onError);
       print('Error Signing User in');
     });
