@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groceryhome/constants/constants.dart';
 import 'dart:async';
-
 import 'FirstScreen.dart';
 
 class SplashScreen extends StatefulWidget {

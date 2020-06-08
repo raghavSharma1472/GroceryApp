@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryhome/constants/constants.dart';
-import 'package:groceryhome/screens/SignUpPage.dart';
+import 'package:groceryhome/providers/user_data.dart';
 import 'package:groceryhome/widgets/social_media_circle.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/constants.dart';
-import 'LoginPage.dart';
-import 'SignUpPage.dart';
+import 'package:groceryhome/services/signingIn.dart';
+import 'package:provider/provider.dart';
+import 'package:groceryhome/screens/LoginPage.dart';
+import 'package:groceryhome/screens/SignUpPage.dart';
 
 class FirstScreen extends StatelessWidget {
   static String id = 'FirstScreen';
@@ -19,8 +22,24 @@ class FirstScreen extends StatelessWidget {
     '* Find Products That Suit You',
     '* Save Time Avoiding Queues'
   ];
+
+  void isAlreadySignedIn(BuildContext context) async {
+    var pref = await SharedPreferences.getInstance();
+    try {
+      if (pref.getString('email') != '' && pref.getString('email') != null) {
+        context.read<UserData>().setEmail(pref.getString('email'));
+        context.read<UserData>().setPassword(pref.getString('password'));
+        SignUserIn().signUserIn(context);
+      }
+    } catch (e) {
+      print(e);
+      print('No Data Stored Currently Locally or Firebase Error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    isAlreadySignedIn(context);
     return Scaffold(
       backgroundColor: Color(0xFFF7FBFC),
       body: SafeArea(
