@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:groceryhome/constants/constants.dart';
 import 'package:groceryhome/providers/user_data.dart';
-import 'package:groceryhome/screens/SignUpPage.dart';
 import 'package:groceryhome/widgets/social_media_circle.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/constants.dart';
-import 'LoginPage.dart';
-import 'SignUpPage.dart';
 import 'package:groceryhome/services/signingIn.dart';
 import 'package:provider/provider.dart';
+import 'package:groceryhome/screens/LoginPage.dart';
+import 'package:groceryhome/screens/SignUpPage.dart';
 
 class FirstScreen extends StatelessWidget {
   static String id = 'FirstScreen';
