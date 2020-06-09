@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:groceryhome/services/signingOut.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:groceryhome/widgets/bottomNavigator.dart';
 
 FirebaseUser currentUser;
 final _firestore = Firestore.instance;
@@ -170,6 +171,27 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: Container(
+        // margin: EdgeInsets.all(20.0),
+        // // decoration: BoxDecoration(
+        // //   borderRadius: BorderRadius.,
+        // //   color: Colors.white,
+        // ),
+        height: 55.0,
+        width: 55.0,
+        child: FittedBox(
+          child: FloatingActionButton(
+            onPressed: () {},
+            child: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            // elevation: 30.0,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomNavigator(),
     );
   }
 }
