@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:groceryhome/constants/constants.dart';
 import 'package:groceryhome/providers/user_data.dart';
 import 'package:groceryhome/widgets/custom_heading.dart';
-import 'package:groceryhome/widgets/store_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groceryhome/widgets/custom_search.dart';
+import 'package:groceryhome/widgets/store_list.dart';
 import 'package:provider/provider.dart';
 import 'package:groceryhome/services/signingOut.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,13 +17,16 @@ final _firestore = Firestore.instance;
 class HomePage extends StatelessWidget {
   static final String id = 'homepage';
   final _auth = FirebaseAuth.instance;
-
+  static double dummyLat;
+  static double dummyLon;
   void getCurrentUserWithLocation(context) {
     _auth.currentUser().then((user) {
       currentUser = user;
       print('${currentUser.displayName ?? 'Userhas'} connected');
       (Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low))
           .then((position) {
+        dummyLat = position.latitude;
+        dummyLon = position.longitude;
         _firestore.collection('users').document(currentUser.email).updateData(
             {'latitude': position.latitude, 'longitude': position.longitude});
         if (position != null) {
@@ -73,7 +77,7 @@ class HomePage extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
             child: Text(
-              'Welcome ${context.watch<UserData>().getName ?? 'User'}',
+              'Welcome ${context.watch<UserData>().getName ?? 'User'},',
               style: kHeadingText.copyWith(fontSize: 30.0),
             ),
           ),
@@ -84,33 +88,10 @@ class HomePage extends StatelessWidget {
               style: TextStyle(color: Colors.blueGrey[200], fontSize: 15.0),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 25.0),
-            child: Material(
-              elevation: 3.0,
-              borderRadius: BorderRadius.circular(24.0),
-              child: TextField(
-                style: TextStyle(color: Colors.blue, fontSize: 17.0),
-                decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () {}, //TODO Search
-                      color: Colors.blue,
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 18.0),
-                    hintText: 'Search Products or Stores ',
-                    hintStyle: TextStyle(color: Colors.blue, fontSize: 17.0),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.circular(24.0)),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blueGrey[50]),
-                        borderRadius: BorderRadius.circular(24.0))),
-                onChanged: (value) {}, //TODO Add Suggetions
-              ),
-            ),
-          ),
+          CustomSearch(
+              hint: 'Search Products or Stores ',
+              horPadding: 20.0,
+              verPadding: 25.0),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 22.0),
             child: CustomHeading(
@@ -157,26 +138,10 @@ class HomePage extends StatelessWidget {
                 onPressedSuffixTextCallback:
                     () {}), //TODO View All Nearby Stores
           ),
-          Padding(
-            padding: EdgeInsets.all(10.0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              for (int i = 0; i < 20; i++) ...[
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  child: StoreCard(), //TODO Adding Individual Store Names
-                )
-              ],
-            ]),
-          ),
+          Padding(padding: EdgeInsets.all(10.0), child: StoreList()),
         ],
       ),
       floatingActionButton: Container(
-        // margin: EdgeInsets.all(20.0),
-        // // decoration: BoxDecoration(
-        // //   borderRadius: BorderRadius.,
-        // //   color: Colors.white,
-        // ),
         height: 55.0,
         width: 55.0,
         child: FittedBox(
@@ -191,7 +156,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomNavigator(),
+      bottomNavigationBar: BottomNavigator(StoreList.documents),
     );
   }
 }

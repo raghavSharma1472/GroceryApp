@@ -1,6 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:groceryhome/screens/mapscreen.dart';
 
-class BottomNavigator extends StatelessWidget {
+class BottomNavigator extends StatefulWidget {
+  final List<DocumentSnapshot> documents;
+  BottomNavigator(this.documents);
+  @override
+  _BottomNavigatorState createState() => _BottomNavigatorState();
+}
+
+class _BottomNavigatorState extends State<BottomNavigator> {
+  List<Color> navTab = [Colors.blue, Colors.blue, Colors.blue, Colors.blue];
+  _tabColorSwitch(int index) {
+    setState(() {
+      navTab = [Colors.blue, Colors.blue, Colors.blue, Colors.blue];
+      navTab[index] = Colors.grey[200];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
@@ -9,7 +26,7 @@ class BottomNavigator extends StatelessWidget {
       color: Color(0xFFF7FBFC),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.black87,
+          color: Color(0xFF40576E),
           // gradient: LinearGradient(
           //   colors: [Color(0xFFDCEFF4), Color(0xFAE7F8FC)],
           // ),
@@ -25,36 +42,56 @@ class BottomNavigator extends StatelessWidget {
               padding: EdgeInsets.only(left: 28.0),
               icon: Icon(
                 Icons.home,
-                color: Colors.blue,
+                color: navTab[0],
               ),
-              onPressed: () {},
+              tooltip: 'Home',
+              onPressed: () {
+                _tabColorSwitch(0);
+              },
             ),
             IconButton(
               iconSize: 30.0,
               padding: EdgeInsets.only(right: 28.0),
               icon: Icon(
                 Icons.location_on,
-                color: Colors.blue,
+                color: navTab[1],
               ),
-              onPressed: () {},
+              tooltip: 'Map',
+              onPressed: () {
+                _tabColorSwitch(1);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MapScreen(widget.documents)));
+              },
             ),
             IconButton(
               iconSize: 30.0,
               padding: EdgeInsets.only(left: 28.0),
               icon: Icon(
                 Icons.favorite,
-                color: Colors.blue,
+                color: navTab[2],
               ),
-              onPressed: () {},
+              tooltip: 'Favourites',
+              onPressed: () {
+                {
+                  _tabColorSwitch(2);
+                }
+              },
             ),
             IconButton(
               iconSize: 30.0,
               padding: EdgeInsets.only(right: 28.0),
               icon: Icon(
                 Icons.person_pin,
-                color: Colors.blue,
+                color: navTab[3],
               ),
-              onPressed: () {},
+              tooltip: 'Profile',
+              onPressed: () {
+                {
+                  _tabColorSwitch(3);
+                }
+              },
             ),
           ],
         ),

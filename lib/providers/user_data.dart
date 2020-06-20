@@ -65,8 +65,7 @@ class UserData extends ChangeNotifier {
       }
     }).catchError((onError) {
       print(onError);
-      print(
-          'Fatil Error storing user details locally'); //TODO remove if working fine
+      print('Error storing user details locally');
     });
   }
 

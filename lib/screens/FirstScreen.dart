@@ -130,9 +130,9 @@ class FirstScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   //TODO Linking Social Media for Login/SignUp
-                  SocialMediaCircle(FontAwesomeIcons.facebookF),
-                  SocialMediaCircle(Icons.phone),
-                  SocialMediaCircle(FontAwesomeIcons.google),
+                  SocialMediaCircle(containedIcon: FontAwesomeIcons.facebookF),
+                  SocialMediaCircle(containedIcon: Icons.phone),
+                  SocialMediaCircle(containedIcon: FontAwesomeIcons.google),
                 ],
               ),
             )

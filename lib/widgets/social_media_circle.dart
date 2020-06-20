@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class SocialMediaCircle extends StatelessWidget {
   final IconData containedIcon;
-  SocialMediaCircle(this.containedIcon);
+  Function onPressed;
+  SocialMediaCircle({this.containedIcon, this.onPressed});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,7 +13,7 @@ class SocialMediaCircle extends StatelessWidget {
             color: Colors.blue,
           )),
       child: IconButton(
-        onPressed: () {},
+        onPressed: onPressed,
         icon: Icon(
           containedIcon,
           color: Colors.blue,
