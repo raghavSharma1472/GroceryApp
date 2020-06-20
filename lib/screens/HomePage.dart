@@ -11,6 +11,9 @@ import 'package:groceryhome/services/signingOut.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:groceryhome/widgets/bottomNavigator.dart';
 
+import '../providers/user_data.dart';
+import '../providers/user_data.dart';
+
 FirebaseUser currentUser;
 final _firestore = Firestore.instance;
 
@@ -19,35 +22,22 @@ class HomePage extends StatelessWidget {
   final _auth = FirebaseAuth.instance;
   static double dummyLat;
   static double dummyLon;
-  void getCurrentUserWithLocation(context) {
-    _auth.currentUser().then((user) {
-      currentUser = user;
-      print('${currentUser.displayName ?? 'Userhas'} connected');
-      (Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low))
-          .then((position) {
-        dummyLat = position.latitude;
-        dummyLon = position.longitude;
-        _firestore.collection('users').document(currentUser.email).updateData(
-            {'latitude': position.latitude, 'longitude': position.longitude});
-        if (position != null) {
-          // context.read<UserData>().setLatitude(position.latitude); //! Error to solve
-          // context.read<UserData>().setLongitude(position.longitude); //! Error to solve
-          // print('Latitude = ${context.read<UserData>().getLatitude}');
-          // print('Longitude = ${context.read<UserData>().getLongitude}');
-        }
-      }).catchError((onError) {
-        print(onError);
-        print(
-            'Error while accessing user location or firebase setting location');
+  void getCurrentLocation(context)async{
+    FirebaseUser loggedInUser ;
+    loggedInUser = await _auth.currentUser();
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    try{
+      _firestore.collection('users').document(loggedInUser.email).updateData({
+        'latitude':position.latitude,
+        'longitude':position.longitude,
       });
-    });
+    }catch(e){
+      print(e);
+    }
   }
-
   @override
   Widget build(BuildContext context) {
-    getCurrentUserWithLocation(context);
-    // getLandL();
-    // addLatitudeAndLongitude();
+    getCurrentLocation(context);
     return Scaffold(
       backgroundColor: Color(0xFFF7FBFC),
       body: ListView(
