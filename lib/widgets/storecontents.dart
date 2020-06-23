@@ -87,6 +87,9 @@ class StoreContents extends StatelessWidget {
               Column(
                 children: <Widget>[
                   SocialMediaCircle(
+                    mainColor: Colors.blue,
+                    iconColor: Colors.white,
+                    borderColor: Colors.blue,
                     containedIcon: Icons.call,
                     onPressed: () =>
                         _makePhoneCall('tel:${storeData.data['phone']}'),
@@ -101,6 +104,9 @@ class StoreContents extends StatelessWidget {
               Column(
                 children: <Widget>[
                   SocialMediaCircle(
+                    mainColor: Colors.blue,
+                    iconColor: Colors.white,
+                    borderColor: Colors.blue,
                     containedIcon: Icons.mail_outline,
                     onPressed: () =>
                         _makePhoneCall('mailto:<${storeData.data['email']}>'),
@@ -115,6 +121,9 @@ class StoreContents extends StatelessWidget {
               Column(
                 children: <Widget>[
                   SocialMediaCircle(
+                    mainColor: Colors.blue,
+                    iconColor: Colors.white,
+                    borderColor: Colors.blue,
                     containedIcon: Icons.bookmark_border,
                   ),
                   Text(

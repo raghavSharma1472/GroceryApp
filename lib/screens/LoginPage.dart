@@ -108,10 +108,22 @@ class LoginPage extends StatelessWidget {
                       children: <Widget>[
                         //TODO Linking Social Media for Login/SignUp
                         SocialMediaCircle(
-                            containedIcon: FontAwesomeIcons.facebookF),
-                        SocialMediaCircle(containedIcon: Icons.phone),
+                            containedIcon: FontAwesomeIcons.facebookF,
+                          mainColor: Colors.white,
+                          borderColor: Colors.blue,
+                          iconColor: Colors.blue,
+                        ),
+                        SocialMediaCircle(containedIcon: Icons.phone,
+                          mainColor: Colors.white,
+                          borderColor: Colors.blue,
+                          iconColor: Colors.blue,
+                        ),
                         SocialMediaCircle(
-                            containedIcon: FontAwesomeIcons.google),
+                            containedIcon: FontAwesomeIcons.google,
+                          mainColor: Colors.white,
+                          borderColor: Colors.blue,
+                          iconColor: Colors.blue,
+                        ),
                       ],
                     ),
                   ),
