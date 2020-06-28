@@ -19,13 +19,14 @@ final _firestore = Firestore.instance;
 
 class HomePage extends StatelessWidget {
   static final String id = 'homepage';
+  static double lat,lon;
   final _auth = FirebaseAuth.instance;
-  static double dummyLat;
-  static double dummyLon;
   void getCurrentLocation(context)async{
     FirebaseUser loggedInUser ;
     loggedInUser = await _auth.currentUser();
     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    lat = position.latitude;
+    lon = position.longitude;
     try{
       _firestore.collection('users').document(loggedInUser.email).updateData({
         'latitude':position.latitude,

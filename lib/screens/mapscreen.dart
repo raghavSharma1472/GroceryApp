@@ -7,7 +7,7 @@ import 'HomePage.dart';
 
 class MapScreen extends StatelessWidget {
   final List<DocumentSnapshot> documents;
-  final LatLng _center = LatLng(HomePage.dummyLat, HomePage.dummyLon);
+  final LatLng _center = LatLng(HomePage.lat, HomePage.lon);
   MapScreen(this.documents);
   final double lat = 10.0;
   final double lon = 10.0;
